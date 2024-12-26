@@ -46,7 +46,7 @@ const schema = {
         "standalone": {
             "type": "boolean"
         },
-        "posixTemplateUrl": {
+        "posix": {
             "type": "boolean"
         }
     },
@@ -76,7 +76,7 @@ class AngularTemplateCacheWebpackPlugin {
             templateFooter: userOptions.templateFooter === undefined ? TEMPLATE_FOOTER : userOptions.templateFooter,
             escapeOptions: userOptions.escapeOptions === undefined ? {} : userOptions.escapeOptions,
             standalone: !!userOptions.standalone,
-            posixTemplateUrl: !!userOptions.posixTemplateUrl
+            posix: !!userOptions.posix
         };
 
         this.options = Object.assign(defaultOptions, userOptions);
@@ -145,9 +145,8 @@ class AngularTemplateCacheWebpackPlugin {
             tpl.source = fs.readFileSync(file);
 
             let htmlRootDir = globParent(this.options.source);
-            let filename = path.relative(htmlRootDir, file);
-
-            let url = this.options.posixTemplateUrl ? path.posix.join(this.options.root, filename) : path.join(this.options.root, filename);
+            let filename = this.options.posix ?  path.posix.relative(htmlRootDir, file) : path.relative(htmlRootDir, file);
+            let url = this.options.posix ? path.posix.join(this.options.root, filename) : path.join(this.options.root, filename);
 
             if (this.options.root === '.' || this.options.root.indexOf('./') === 0) {
                 url = './' + url;
