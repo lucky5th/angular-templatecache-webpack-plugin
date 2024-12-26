@@ -73,6 +73,7 @@ class AngularTemplateCacheWebpackPlugin {
             templateFooter: userOptions.templateFooter === undefined ? TEMPLATE_FOOTER : userOptions.templateFooter,
             escapeOptions: userOptions.escapeOptions === undefined ? {} : userOptions.escapeOptions,
             standalone: !!userOptions.standalone,
+            posixTemplateUrl: !!userOptions.posixTemplateUrl
         };
 
         this.options = Object.assign(defaultOptions, userOptions);
@@ -143,7 +144,8 @@ class AngularTemplateCacheWebpackPlugin {
             let htmlRootDir = globParent(this.options.source);
             let filename = path.relative(htmlRootDir, file);
 
-            let url = path.join(this.options.root, filename);
+            let url = this.options.posixTemplateUrl ? path.posix.join(this.options.root, filename) : path.join(this.options.root, filename);
+
             if (this.options.root === '.' || this.options.root.indexOf('./') === 0) {
                 url = './' + url;
             }
