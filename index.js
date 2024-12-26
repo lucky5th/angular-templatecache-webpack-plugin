@@ -45,6 +45,9 @@ const schema = {
         },
         "standalone": {
             "type": "boolean"
+        },
+        "posixTemplateUrl": {
+            "type": "boolean"
         }
     },
     "additionalProperties": false
